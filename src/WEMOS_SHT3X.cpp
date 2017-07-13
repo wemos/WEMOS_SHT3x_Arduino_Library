@@ -11,7 +11,7 @@ SHT3X::SHT3X(uint8_t address)
 
 
 
-void SHT3X::get()
+byte SHT3X::get()
 {
 	unsigned int data[6];
 
@@ -21,7 +21,9 @@ void SHT3X::get()
 	Wire.write(0x2C);
 	Wire.write(0x06);
 	// Stop I2C transmission
-	Wire.endTransmission();
+	if (Wire.endTransmission()!=0) 
+		return 1;  
+
 	delay(500);
 
 	// Request 6 bytes of data
@@ -29,18 +31,19 @@ void SHT3X::get()
 
 	// Read 6 bytes of data
 	// cTemp msb, cTemp lsb, cTemp crc, humidity msb, humidity lsb, humidity crc
-	if (Wire.available() == 6)
-	{
-	data[0] = Wire.read();
-	data[1] = Wire.read();
-	data[2] = Wire.read();
-	data[3] = Wire.read();
-	data[4] = Wire.read();
-	data[5] = Wire.read();
-	}
+	for (int i=0;i<6;i++) {
+		data[i]=Wire.read();
+	};
+	
+	delay(50);
+	
+	if (Wire.available()!=0) 
+		return 2;
 
 	// Convert the data
 	cTemp = ((((data[0] * 256.0) + data[1]) * 175) / 65535.0) - 45;
 	fTemp = (cTemp * 1.8) + 32;
 	humidity = ((((data[3] * 256.0) + data[4]) * 100) / 65535.0);
+
+	return 0;
 }

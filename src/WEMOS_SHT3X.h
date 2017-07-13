@@ -13,8 +13,8 @@
 
 class SHT3X{
 public:
-	SHT3X(uint8_t address);
-	void get(void);
+	SHT3X(uint8_t address=0x45);
+	byte get(void);
 	float cTemp=0;
 	float fTemp=0;
 	float humidity=0;
