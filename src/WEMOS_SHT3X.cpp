@@ -1,8 +1,6 @@
 #include "WEMOS_SHT3X.h"
 
-/* Motor()
 
-*/
 SHT3X::SHT3X(uint8_t address)
 {
 	Wire.begin();
