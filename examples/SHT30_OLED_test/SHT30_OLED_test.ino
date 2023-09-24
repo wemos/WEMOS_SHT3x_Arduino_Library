@@ -11,7 +11,7 @@ SHT3X sht30(0x45);
 void setup() {
 
   Serial.begin(115200);
-
+  Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
 
 }
