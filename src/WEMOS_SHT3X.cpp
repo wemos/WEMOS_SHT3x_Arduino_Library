@@ -24,7 +24,9 @@ byte SHT3X::get()
 	if (Wire.endTransmission()!=0) 
 		return 1;  
 
-	delay(500);
+	// From the datasheet, this is the max time needed to read
+	// temp and hum at "high repeability" mode
+	delay(15);
 
 	// Request 6 bytes of data
 	Wire.requestFrom(_address, 6);
@@ -35,8 +37,8 @@ byte SHT3X::get()
 		data[i]=Wire.read();
 	};
 	
-	delay(50);
-	
+	// No need to wait again, the last "bit" (NACK) has been already received
+
 	if (Wire.available()!=0) 
 		return 2;
 
